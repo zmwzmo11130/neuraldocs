@@ -1,7 +1,7 @@
 # Neuraldocs - Web Article RAG API - Built with OpenAI's Codex
 
 Before diving deep into the project, let's discuss Codex, the OpenAI CLI tool for automated code generation using the latest o4-mini and o3 models.
-For this project, I exclusively used the `o4-mini` model with `--full-auto` and I planned the project idea in the `codex.md` file using ChatGPT (`4o-mini` again).
+For this project, I exclusively used the `o4-mini` model with `--full-auto` and I planned the project idea in the `codex.md` file using ChatGPT (`o4-mini` again).
 
 While I don't have experience with Claude Code for comparison, using Codex was excellent.
 
