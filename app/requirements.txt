@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+httpx
+trafilatura
+openai
+sentence-transformers
+chromadb
+pymongo
+redis
+rq
+python-dotenv
+jinja2
+pydantic-settings
+jinja2

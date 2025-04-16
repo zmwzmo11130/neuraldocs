@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Web Article RAG</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        form { margin-bottom: 1em; }
+        input[type="text"] { width: 300px; }
+        button { margin-left: 0.5em; }
+        #documents-list li { margin-bottom: 0.5em; }
+    </style>
+</head>
+<body>
+    <h1>Web Article RAG</h1>
+    <div id="stats">Loading stats...</div>
+
+    <h2>Add URL</h2>
+    <form id="add-url-form">
+        <input type="text" id="url-input" placeholder="Enter article URL" required>
+        <button type="submit">Add URL</button>
+    </form>
+    <div id="add-url-result"></div>
+
+    <h2>Ask a Question</h2>
+    <form id="query-form">
+        <input type="text" id="question-input" placeholder="Enter your question" required>
+        <button type="submit">Ask</button>
+    </form>
+    <div id="query-result"></div>
+
+    <h2>Documents</h2>
+    <ul id="documents-list"></ul>
+    <button id="prev-page">Previous</button>
+    <span id="page-info"></span>
+    <button id="next-page">Next</button>
+
+    <script>
+        let currentPage = 1;
+        const pageSize = 100;
+
+        async function fetchDocuments(page) {
+            const res = await fetch(`/documents?page=${page}`);
+            if (!res.ok) {
+                console.error("Failed to fetch documents", res);
+                return;
+            }
+            const data = await res.json();
+            const list = document.getElementById("documents-list");
+            list.innerHTML = "";
+            data.documents.forEach(doc => {
+                const li = document.createElement("li");
+                const text = doc.title ? `${doc.title} - ${doc.url}` : doc.url;
+                li.textContent = text;
+                list.appendChild(li);
+            });
+            currentPage = data.page;
+            document.getElementById("page-info").textContent = `Page ${data.page} of ${Math.ceil(data.total/pageSize)}`;
+            document.getElementById("prev-page").disabled = data.page <= 1;
+            document.getElementById("next-page").disabled = data.page * pageSize >= data.total;
+        }
+        
+        // Fetch and display system statistics
+        async function fetchStats() {
+            try {
+                const res = await fetch('/stats');
+                if (!res.ok) {
+                    console.error('Failed to fetch stats', res);
+                    return;
+                }
+                const stats = await res.json();
+                const statsDiv = document.getElementById('stats');
+                statsDiv.textContent = 
+                    `Documents: ${stats.documents}` +
+                    (stats.vectors !== null ? `, Vectors: ${stats.vectors}` : '');
+            } catch (err) {
+                console.error('Error fetching stats', err);
+            }
+        }
+
+        document.getElementById("prev-page").addEventListener("click", () => {
+            if (currentPage > 1) fetchDocuments(currentPage - 1);
+        });
+        document.getElementById("next-page").addEventListener("click", () => {
+            fetchDocuments(currentPage + 1);
+        });
+
+        document.getElementById("add-url-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const url = document.getElementById("url-input").value;
+            const res = await fetch("/add-url", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ url })
+            });
+            const result = await res.json();
+            document.getElementById("add-url-result").textContent = result.message ? result.message + " (task " + result.task_id + ")" : JSON.stringify(result);
+            document.getElementById("url-input").value = "";
+            fetchDocuments(currentPage);
+            fetchStats();
+        });
+
+        document.getElementById("query-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const question = document.getElementById("question-input").value;
+            const res = await fetch("/query", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ question })
+            });
+            const result = await res.json();
+            const div = document.getElementById("query-result");
+            div.innerHTML = `<p><strong>Answer:</strong> ${result.answer}</p><p><strong>Sources:</strong> ${result.sources.join(", ")}</p>`;
+            document.getElementById("question-input").value = "";
+        });
+
+        // Initial load of stats and documents
+        fetchStats();
+        fetchDocuments(1);
+    </script>
+</body>
+</html>
