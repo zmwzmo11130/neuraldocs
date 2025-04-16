@@ -12,7 +12,7 @@ The tool and model handled almost everything in one shot, with only 2 errors due
 
 I'm impressed by the model's speed, precision and overall performance. And it's cost-effective too. Building this app, including fixing the 2 errors and adding 2 features (frontend and stats routes), cost less than $1.50 USD. While larger apps will naturally cost more, the tool seems to optimize token usage to maintain reasonable costs. I still need to try o3, but so far, o4-mini has proven excellent and I'm eager to explore it further.
 
-The main challenge remains the knowledge cutoff date. This should be moved to Feb/March 2025, or the OpenAI API/model should have internet access to fetch latest data, as outdated information is problematic in our rapidly evolving tech landscape.
+The main challenge remains the knowledge cutoff date. This should be moved to Feb/March 2025, or the OpenAI API/model should have internet access to fetch latest data, as outdated information is problematic in our rapidly evolving tech landscape. To bypass the model's knowledge cutoff, relevant documentation can be included in markdown files. For instance, doc_openai.md was added to provide details on the OpenAI Python Package.
 
 **Web Article Retrieval-Augmented Generation (RAG) API with FastAPI, Docker, and OpenAI**
 
@@ -180,11 +180,6 @@ Environment variables (in `.env`):
 | NANO_MODEL_NAME      | OpenAI model for structuring articles | `gpt-4.1-nano`     |
 | RAG_MODEL_NAME       | OpenAI model for RAG answering        | `gpt-4.1-nano`     |
 | TOP_K                | Default number of retrieved chunks    | `5`                |
-
-## Contributing
-
-Contributions welcome! Feel free to open issues or submit pull requests.  
- Please ensure code follows the existing style and includes relevant updates to documentation.
 
 ## Acknowledgements
 
