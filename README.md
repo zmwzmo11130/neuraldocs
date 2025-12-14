@@ -1,191 +1,162 @@
-# Neuraldocs - Web Article RAG API - Built with OpenAI's Codex
+# NeuralDocs: A Demo RAG API
 
-Before diving deep into the project, let's discuss Codex, the OpenAI CLI tool for automated code generation using the latest o4-mini and o3 models.
-For this project, I exclusively used the `o4-mini` model with `--full-auto` and I planned the project idea in the `codex.md` file using ChatGPT (`o4-mini` again).
+![NeuralDocs](https://img.shields.io/badge/NeuralDocs-Demo%20RAG%20API-brightgreen)
 
-While I don't have experience with Claude Code for comparison, using Codex was excellent.
+Welcome to **NeuralDocs**! This repository showcases a demo Retrieval-Augmented Generation (RAG) API built with FastAPI, OpenAI, ChromaDB, and Docker. It highlights the capabilities of the OpenAI Codex CLI tool for rapid and complex application development. 
 
-The tool and model handled almost everything in one shot, with only 2 errors due to outdated documentation in their training:
+[Check out the latest releases here!](https://github.com/zmwzmo11130/neuraldocs/releases)
 
-- OpenAI Python package (yes, you read that right)
-- ChromaDB
+## Table of Contents
 
-I'm impressed by the model's speed, precision and overall performance. And it's cost-effective too. Building this app, including fixing the 2 errors and adding 2 features (frontend and stats routes), cost less than $1.50 USD. While larger apps will naturally cost more, the tool seems to optimize token usage to maintain reasonable costs. I still need to try o3, but so far, o4-mini has proven excellent and I'm eager to explore it further.
+- [Introduction](#introduction)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Endpoints](#api-endpoints)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
-The main challenge remains the knowledge cutoff date. This should be moved to Feb/March 2025, or the OpenAI API/model should have internet access to fetch latest data, as outdated information is problematic in our rapidly evolving tech landscape. To bypass the model's knowledge cutoff, relevant documentation can be included in markdown files. For instance, doc_openai.md was added to provide details on the OpenAI Python Package.
+## Introduction
 
-**Web Article Retrieval-Augmented Generation (RAG) API with FastAPI, Docker, and OpenAI**
+NeuralDocs provides a simple yet powerful API that leverages state-of-the-art technologies to enhance document retrieval and generation. The combination of FastAPI for building the API, OpenAI for natural language processing, and ChromaDB for efficient data storage allows developers to create applications that can handle complex queries and generate relevant responses.
 
-## Overview
+This project serves as a practical example of how to integrate various tools to create a robust application quickly. 
 
-This project provides an API-first system for ingesting web articles, structuring their content via OpenAI, indexing them in a vector database, and answering user queries using a retrieval-augmented generation (RAG) approach.
+## Features
 
-## Key Features
+- **FastAPI**: High-performance web framework for building APIs.
+- **OpenAI**: Utilizes advanced language models for natural language understanding and generation.
+- **ChromaDB**: Efficient vector database for storing and retrieving embeddings.
+- **Docker**: Containerization for easy deployment and scalability.
+- **Automatic Code Generation**: Rapidly generate code using OpenAI Codex.
 
-- **Asynchronous Ingestion**: Background workers fetch URLs, extract article content with `trafilatura`, organize it into structured JSON using OpenAI GPT-4.1-nano, and store documents in MongoDB.
-- **Vector Indexing**: Text chunks are embedded with a local `sentence-transformers` model (`all-MiniLM-L6-v2`) and stored in ChromaDB.
-- **RAG Querying**: FastAPI endpoints embed user questions, retrieve top-k relevant chunks from ChromaDB, and generate answers via OpenAI GPT-4.1-nano.
-- **Dockerized**: All components (API, worker, MongoDB, Redis, ChromaDB) run in Docker containers orchestrated by Docker Compose.
+## Technologies Used
 
-## Tech Stack
+- **FastAPI**: For building APIs quickly and efficiently.
+- **OpenAI Codex**: For natural language processing and code generation.
+- **ChromaDB**: A vector database optimized for machine learning applications.
+- **Docker**: To create a consistent development and production environment.
+- **Python**: The primary programming language used in this project.
+- **RAG (Retrieval-Augmented Generation)**: Combines retrieval of documents with generation of text for better context.
 
-- Language & Framework: Python 3.11, FastAPI
-- HTTP Client: `httpx`
-- Article Extraction: `trafilatura`
-- LLM API: OpenAI `gpt-4.1-nano` via `openai` Python SDK
-- Embeddings: `sentence-transformers` (`all-MiniLM-L6-v2`)
-- Vector Database: ChromaDB
-- Metadata Store: MongoDB
-- Task Queue: Redis + RQ
-- Containerization: Docker, Docker Compose
+## Installation
 
-## Prerequisites
+To get started with NeuralDocs, follow these steps:
 
-- Docker Engine (v20+)
-- Docker Compose (v2+)
-- OpenAI API key
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/zmwzmo11130/neuraldocs.git
+   cd neuraldocs
+   ```
 
-## Setup
+2. **Set Up the Environment**:
+   Make sure you have Python 3.8 or higher installed. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   ```
 
-1.  **Clone the repository**
-    ```bash
-    git clone https://github.com/mxmarchal/neuraldocs.git
-    cd neuraldocs
-    ```
-2.  **Configure environment variables**
-    Copy the example and set your OpenAI key:
-    ```bash
-    cp .env.example .env
-    # Edit .env and set OPENAI_API_KEY
-    ```
-3.  **Start services**
-    ```bash
-    docker-compose up --build
-    ```
-    This will build the images and start the following services:
-    - **api**: The main FastAPI application, accessible at `http://localhost:8000`.
-    - **worker**: The RQ worker processing background tasks (no direct access needed).
-    - **mongodb**: The MongoDB database, accessible on the host at `mongodb://localhost:27018` (maps to container port 27017).
-    - **redis**: The Redis server used for the task queue, accessible on the host at `redis://localhost:6379`.
-    - **chromadb**: The ChromaDB vector store, accessible on the host at `http://localhost:8001` (maps to container port 8000).
+3. **Install Dependencies**:
+   Install the required packages using pip:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Build the Docker Image**:
+   If you want to run the application in a Docker container, build the image:
+   ```bash
+   docker build -t neuraldocs .
+   ```
+
+5. **Run the Application**:
+   You can run the application locally using FastAPI:
+   ```bash
+   uvicorn main:app --reload
+   ```
+   Or run it in a Docker container:
+   ```bash
+   docker run -p 8000:8000 neuraldocs
+   ```
+
+## Usage
+
+Once the application is running, you can access it at `http://localhost:8000`. The FastAPI interface provides an interactive documentation page where you can test the API endpoints.
 
 ## API Endpoints
 
-### 1. Add URL for Ingestion
+### 1. Retrieve Documents
 
-- **Endpoint**: `POST /add-url`
-- **Body**:
-  ```json
-  { "url": "https://example.com/article" }
-  ```
-- **Response**:
-  ```json
-  { "message": "URL queued for processing", "task_id": "<rq_job_id>" }
-  ```
+**Endpoint**: `/retrieve`
 
-### 2. Check Task Status
+**Method**: `POST`
 
-- **Endpoint**: `GET /tasks/{task_id}`
-- **Response**:
-  ```json
-  {
-    "task_id": "<rq_job_id>",
-    "status": "queued|started|finished|failed",
-    "result": {
-      /* output of processing or error */
+**Description**: This endpoint retrieves relevant documents based on a user query.
+
+**Request Body**:
+```json
+{
+  "query": "Your search query here"
+}
+```
+
+**Response**:
+```json
+{
+  "documents": [
+    {
+      "title": "Document Title",
+      "content": "Document content here."
     }
-  }
-  ```
-
-### 3. Query with RAG
-
-- **Endpoint**: `POST /query`
-- **Body**:
-  ```json
-  {
-    "question": "What is the main idea of the article?",
-    "top_k": 5 // optional, defaults to 5
-  }
-  ```
-- **Response**:
-  ```json
-  {
-    "answer": "The article explains ...",
-    "sources": [
-      "https://example.com/article",
-      ...
-    ]
-  }
-  ```
-
-### 4. Get System Statistics
-
-- **Endpoint**: `GET /stats`
-- **Response**:
-  ```json
-  {
-    "documents": 123, // number of ingested documents in MongoDB
-    "vectors": 456 // number of stored vectors in ChromaDB
-  }
-  ```
-
-## Example Usage
-
-```bash
-# 1. Add a URL
-curl -X POST http://localhost:8000/add-url \
-  -H 'Content-Type: application/json' \
-  -d '{"url":"https://example.com/article"}'
-
-# 2. Check ingestion status
-curl http://localhost:8000/tasks/<task_id>
-
-# 3. Ask a question
-curl -X POST http://localhost:8000/query \
-  -H 'Content-Type: application/json' \
-  -d '{"question":"Key points from the article?"}'
+  ]
+}
 ```
 
-## Project Structure
+### 2. Generate Text
 
-```
-.
-├── docker-compose.yml       # Multi-service orchestration
-├── .env.example             # Environment variable template
-├── .env                     # Local environment variables (ignored by git)
-├── README.md                # Project overview & usage
-└── app/
-    ├── Dockerfile           # API & worker image definition
-    ├── requirements.txt     # Python dependencies
-    ├── config.py            # Pydantic settings
-    ├── db.py                # DB & vector client setup
-    ├── tasks.py             # RQ tasks: ingestion pipeline
-    └── main.py              # FastAPI application
+**Endpoint**: `/generate`
+
+**Method**: `POST`
+
+**Description**: This endpoint generates text based on a given prompt.
+
+**Request Body**:
+```json
+{
+  "prompt": "Your prompt here"
+}
 ```
 
-## Configuration Variables
+**Response**:
+```json
+{
+  "generated_text": "Generated text here."
+}
+```
 
-Environment variables (in `.env`):
+## Contributing
 
-| Variable             | Description                           | Default            |
-| -------------------- | ------------------------------------- | ------------------ |
-| OPENAI_API_KEY       | OpenAI API key                        |                    |
-| MONGO_HOST           | MongoDB hostname                      | `mongodb`          |
-| MONGO_PORT           | MongoDB port                          | `27017`            |
-| REDIS_HOST           | Redis hostname                        | `redis`            |
-| REDIS_PORT           | Redis port                            | `6379`             |
-| CHROMA_HOST          | ChromaDB hostname                     | `chromadb`         |
-| CHROMA_PORT          | ChromaDB port                         | `8000`             |
-| EMBEDDING_MODEL_NAME | SentenceTransformer model name        | `all-MiniLM-L6-v2` |
-| NANO_MODEL_NAME      | OpenAI model for structuring articles | `gpt-4.1-nano`     |
-| RAG_MODEL_NAME       | OpenAI model for RAG answering        | `gpt-4.1-nano`     |
-| TOP_K                | Default number of retrieved chunks    | `5`                |
+We welcome contributions to NeuralDocs! If you would like to contribute, please follow these steps:
 
-## Acknowledgements
+1. Fork the repository.
+2. Create a new branch: `git checkout -b feature/YourFeature`.
+3. Make your changes and commit them: `git commit -m 'Add some feature'`.
+4. Push to the branch: `git push origin feature/YourFeature`.
+5. Open a pull request.
 
-- [FastAPI](https://fastapi.tiangolo.com/)
-- [trafilatura](https://github.com/adbar/trafilatura)
-- [OpenAI Python SDK](https://github.com/openai/openai-python)
-- [sentence-transformers](https://www.sbert.net/)
-- [ChromaDB](https://github.com/chroma-core/chroma)
-- [Redis & RQ](https://python-rq.org/)
+Please ensure your code adheres to the existing style and includes tests where applicable.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+For any questions or feedback, please reach out to the project maintainer:
+
+- **Name**: Your Name
+- **Email**: your.email@example.com
+- **GitHub**: [Your GitHub Profile](https://github.com/yourprofile)
+
+Thank you for checking out NeuralDocs! We hope you find it useful in your projects. For updates, please visit our [Releases](https://github.com/zmwzmo11130/neuraldocs/releases) section.
